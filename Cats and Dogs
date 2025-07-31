@@ -1,0 +1,58 @@
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn import datasets
+
+np.random.seed(0)
+
+dog_whisker=np.random.normal(loc=5,scale=1,size=10)
+dog_ear_flappines_index=np.random.normal(loc=8,scale=1,size=10)
+
+cat_whisker=np.random.normal(loc=8,scale=1,size=10)
+cat_ear_flappines_index=np.random.normal(loc=5,scale=1,size=10)
+
+
+print("Dog whisker lengths:",dog_whisker)
+print("Dog ear flappines index:",dog_ear_flappines_index)
+
+print("Cat whisker lengths:",cat_whisker)
+print("Cat ear flappines index:",cat_ear_flappines_index)
+
+k=100
+d=2
+
+dogs_data=np.vstack((dog_whisker,dog_ear_flappines_index)).T
+cats_data=np.vstack((cat_whisker,cat_ear_flappines_index)).T
+
+
+error=0
+best_error=float('inf')
+best_theta=None
+best_theta0=None
+for i in range(k):
+    theta=np.random.normal(size=2)
+    theta0=np.random.normal()
+
+    for x_dogs in dogs_data:
+        if np.dot(x_dogs,theta)+theta0<0:
+            error+=1
+
+    for x_cats in cats_data:
+        if np.dot(x_cats,theta)+theta0>0:
+            error+=1
+
+    if error<best_error:
+        best_error=error
+        best_theta=theta
+        best_theta0=theta0
+
+print(best_error)
+print(best_theta)
+print(best_theta0)
+
+plt.scatter(dog_whisker,dog_ear_flappines_index,label="Dogs")
+plt.scatter(cat_whisker,cat_ear_flappines_index,label="Cats")
+plt.xlabel("Whisler length")
+plt.ylabel("Ear flappines index")
+plt.title("Dogs Vs Cats")
+plt.legend()
+plt.show()
