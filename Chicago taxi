@@ -1,0 +1,30 @@
+#@title Code - Load dependencies
+
+# data
+import numpy as np
+import pandas as pd
+
+# machine learning
+import keras
+import ml_edu.experiment
+import ml_edu.results
+
+# data visualization
+import plotly.express as px
+
+# @title
+chicago_taxi_dataset = pd.read_csv("https://download.mlcc.google.com/mledu-datasets/chicago_taxi_train.csv")
+
+#@title Code - Read dataset
+
+# Updates dataframe to use specific columns.
+training_df = chicago_taxi_dataset.loc[:, ('TRIP_MILES', 'TRIP_SECONDS', 'FARE', 'COMPANY', 'PAYMENT_TYPE', 'TIP_RATE')]
+
+print('Read dataset completed successfully')
+print('Total number of rows: {0}\n\n'.format(len(training_df.index)))
+training_df.head(200)
+training_df.describe(include='all')
+max_fare = training_df['FARE'].max()
+max_tip_rate = training_df['TIP_RATE'].max()
+print("What is maximum fare? ANswer: ${fare:.2f}".format(fare=max_fare))
+print("What is maximum tip rate? Answer: {rate:.2f}%".format(rate=max_tip_rate*100))
