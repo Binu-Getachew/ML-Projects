@@ -1,0 +1,59 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
+np.random.seed(0)
+
+apple_sweetness=np.random.normal(loc=6,scale=1,size=10)
+apple_crunchiness=np.random.normal(loc=8,scale=1,size=10)
+
+orange_sweetness=np.random.normal(loc=8,scale=1,size=10)
+orange_crunchiness=np.random.normal(loc=4,scale=1,size=10)
+
+print("Apple sweetness:", apple_sweetness)
+print("Apple crunchiness:", apple_crunchiness)
+print("Orange sweetness:", orange_sweetness)
+print("Orange crunchiness:", orange_crunchiness)
+
+apples=np.vstack((apple_sweetness,apple_crunchiness)).T
+oranges=np.vstack((orange_sweetness,orange_crunchiness)).T
+
+k=100
+best_error=float('inf')
+best_theta=None
+best_theta0=None
+
+for i in range(k):
+    theta=np.random.normal(size=2)
+    theta0=np.random.normal()
+
+    error=0
+
+    for apple in apples:
+        if np.dot(apple,theta)+theta0 >= 0:
+            error+=1
+
+    for orange in oranges:
+        if np.dot(orange,theta)+theta0<=0:
+            error+=1
+
+    if error < best_error:
+        best_error=error
+        best_theta=theta
+        best_theta0=theta0
+
+print("Best error:",best_error)
+print("Best Theta:",best_theta)
+print("Best Theta0:",best_theta0)
+plt.scatter(apple_sweetness,apple_crunchiness,label="Apples",color='red')
+plt.scatter(orange_sweetness,orange_crunchiness,label="Oranges",color='orange')
+plt.xlabel("Sweetness")
+plt.ylabel('Crunchiness')
+plt.title("Apples Vs Oranges")
+
+x_vals=np.linspace(3,10,100)
+y_vals= -(best_theta[0]*x_vals+best_theta0)/best_theta[1]
+plt.plot(x_vals,y_vals,label='Best separator',color='green')
+
+plt.legend()
+plt.grid(True)
+plt.show()
